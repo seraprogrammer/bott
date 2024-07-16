@@ -7,47 +7,26 @@
 <body>
   <h1>User Data Mini App</h1>
 
-  <form id="user-form">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name"><br><br>
-
-    <label for="age">Age:</label>
-    <input type="number" id="age" name="age"><br><br>
-
-    <input type="submit" value="Save">
-  </form>
-
   <div id="user-data">
     <h2>User Data</h2>
-    <p>Name: <span id="display-name"></span></p>
-    <p>Age: <span id="display-age"></span></p>
+    <p>First Name: <span id="display-first-name"></span></p>
+    <p>Last Name: <span id="display-last-name"></span></p>
+    <p>Username: <span id="display-username"></span></p>
   </div>
 
   <script>
     window.Telegram.WebApp.ready();
 
-    const userForm = document.getElementById('user-form');
-    const displayName = document.getElementById('display-name');
-    const displayAge = document.getElementById('display-age');
+    const displayFirstName = document.getElementById('display-first-name');
+    const displayLastName = document.getElementById('display-last-name');
+    const displayUsername = document.getElementById('display-username');
 
-    // Load user data from localStorage
-    const userData = JSON.parse(localStorage.getItem('userData')) || {};
-    displayName.textContent = userData.name || '';
-    displayAge.textContent = userData.age || '';
+    // Retrieve user data from Telegram Web App
+    const userData = window.Telegram.WebApp.initDataUnsafe;
 
-    userForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      const name = document.getElementById('name').value;
-      const age = document.getElementById('age').value;
-
-      // Save user data to localStorage
-      const userData = { name, age };
-      localStorage.setItem('userData', JSON.stringify(userData));
-
-      displayName.textContent = name;
-      displayAge.textContent = age;
-    });
+    displayFirstName.textContent = userData.user.first_name;
+    displayLastName.textContent = userData.user.last_name;
+    displayUsername.textContent = userData.user.username;
   </script>
 </body>
 </html>
