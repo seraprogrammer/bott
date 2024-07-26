@@ -1,32 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>User Data Mini App</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-  <h1>User Data Mini App</h1>
+    <h1>Welcome to the Telegram Web App</h1>
+    <div id="userData"></div>
+    <button id="openUrlButton">Open URL</button>
 
-  <div id="user-data">
-    <h2>User Data</h2>
-    <p>First Name: <span id="display-first-name"></span></p>
-    <p>Last Name: <span id="display-last-name"></span></p>
-    <p>Username: <span id="display-username"></span></p>
-  </div>
+    <script>
+        // Initialize the Telegram Web App
+        const userDataDiv = document.getElementById('userData');
+        const openUrlButton = document.getElementById('openUrlButton');
 
-  <script>
-    window.Telegram.WebApp.ready();
+        // Display user data
+        function displayUserData() {
+            const user = Telegram.WebApp.initDataUnsafe;
 
-    const displayFirstName = document.getElementById('display-first-name');
-    const displayLastName = document.getElementById('display-last-name');
-    const displayUsername = document.getElementById('display-username');
+            userDataDiv.innerHTML = `
+                <h2>User Data</h2>
+                <p><strong>ID:</strong> ${user.user.id}</p>
+                <p><strong>First Name:</strong> ${user.user.first_name}</p>
+                <p><strong>Last Name:</strong> ${user.user.last_name || 'N/A'}</p>
+                <p><strong>Username:</strong> ${user.user.username || 'N/A'}</p>
+                <p><strong>Join Date:</strong> ${new Date(user.user.join_date * 1000).toLocaleString() || 'N/A'}</p>
+            `;
+        }
 
-    // Retrieve user data from Telegram Web App
-    const userData = window.Telegram.WebApp.initDataUnsafe;
+        // Open a URL when the button is clicked
+        openUrlButton.addEventListener('click', () => {
+            const url = 'https://your-url.com'; // Replace with your desired URL
+            Telegram.WebApp.openTgLink(url);
+        });
 
-    displayFirstName.textContent = userData.user.first_name;
-    displayLastName.textContent = userData.user.last_name;
-    displayUsername.textContent = userData.user.username;
-  </script>
+        // Call the function to display user data
+        displayUserData();
+    </script>
 </body>
 </html>
